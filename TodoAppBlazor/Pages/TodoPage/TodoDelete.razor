@@ -1,0 +1,53 @@
+﻿@page "/TodoPage/TodoDelete/{Id}"
+@using TodoAppBlazor.Data
+@inject TodoService todService
+@inject NavigationManager NavigationManager
+
+<h2>Delete Todo</h2>
+<hr />
+<h3>Are you sure want to delete this?</h3>
+<form>
+    <div class="row">
+        <div class=" col-md-8">
+            <div class="form-group">
+                <label>Todo Id:</label>
+                <label>@obj.Id</label>
+            </div>
+            <div class="form-group">
+                <label>Title:</label>
+                <label>@obj.Title</label>
+            </div>
+            <div class="form-group">
+                <label>Status:</label>
+                <label>@obj.Status</label>
+            </div>
+            
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-danger" @onclick="@DeleteTodo" value="Delete" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code { [Parameter]
+            public string Id { get; set; }
+            Todo obj = new Todo();
+            protected override async Task OnInitializedAsync()
+            {
+                obj = await Task.Run(() => todService.GetTodoAsync(Convert.ToInt32(Id)));
+            }
+            protected async void DeleteTodo()
+            {
+                await todService.DeleteTodoAsync(obj);
+                NavigationManager.NavigateTo("/TodoPage/Todos");
+            }
+            void Cancel()
+            {
+                NavigationManager.NavigateTo("/TodoPage/Todos");
+            } }

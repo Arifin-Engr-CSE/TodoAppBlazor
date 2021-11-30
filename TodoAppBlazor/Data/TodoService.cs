@@ -43,6 +43,14 @@ namespace TodoAppBlazor.Data
             await _appDbContext.SaveChangesAsync();
             return true;
         }
-       
+        
+        public async Task<bool> DeleteTodoAsync(Todo todo)
+        {
+            _appDbContext.Remove(todo);
+            await _appDbContext.SaveChangesAsync();
+            return true;
+        }
+        
+
     }
 }
