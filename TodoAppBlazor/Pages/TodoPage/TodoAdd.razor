@@ -1,0 +1,49 @@
+﻿@page "/TodoPage/TodoAdd"
+@using TodoAppBlazor.Data
+@inject TodoService todoService
+@inject NavigationManager NavigationManager
+
+<h2>Add Todo</h2>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Title" class="control-label">Title</label>
+                <input form="Title" class="form-control" @bind="@obj.Title" />
+            </div>
+            <div class="form-group">
+                <label for="Status" class="control-label"></label>
+                <select @bind="@obj.Status" class="form-control">
+                    <option value="">-Select Status</option>
+                    <option value="Done">Done</option>
+                    <option value="UnDone">No</option>
+                </select>
+            </div>
+            
+            
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateTodo" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code { Todo obj = new Todo();
+            protected async void CreateTodo()
+            {
+                await todoService.InsertTodoAsync(obj);
+                NavigationManager.NavigateTo("/TodoPage/Todos");
+            }
+            void Cancel()
+            {
+                NavigationManager.NavigateTo("/TodoPage/Todos");
+            } }

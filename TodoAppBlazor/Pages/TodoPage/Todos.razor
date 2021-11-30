@@ -1,0 +1,54 @@
+﻿@page "/TodoPage/Todos"
+@using TodoAppBlazor
+@inject TodoService todoService
+
+
+<NavLink class="nav-link" href="/TodoPage/TodoAdd">
+    <span class="oi oi-plus" aria-hidden="true">Add New</span>
+
+</NavLink>
+
+<h3>Todo List</h3>
+@if (todObj is null)
+{
+    <p><em>Loading... !</em></p>}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in todObj)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Title</td>
+                    <td>@item.Status</td>
+                    <td>
+                        <a class="nav-link" href="/TodoPage/TodosUpdate/@item.Id" aria-hidden="true"><i class="fas fa-edit"></i></a>
+                        <a class="nav-link" href="Delete/@item.Id" aria-hidden="true" ><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+@code {
+
+    List<Todo> todObj;
+    protected override async Task OnInitializedAsync()
+    {
+        todObj = await Task.Run(() => todoService.GetAllTodosAsync());
+    }
+
+}
